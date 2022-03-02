@@ -1160,7 +1160,7 @@ def create_param_attribute_list(param_node, param, model, supported_file_formats
     # parameters need to be treated in cheetah. variable names are currently fixed back
     # to dashes in fill_ctd.py. currently there seems to be only a single tool
     # requiring this https://github.com/OpenMS/OpenMS/pull/4529
-    param_node.attrib["name"] = get_galaxy_parameter_name(param)
+    # param_node.attrib["name"] = get_galaxy_parameter_name(param)
     param_node.attrib["argument"] = "-%s" % utils.extract_param_name(param)
     param_type = TYPE_TO_GALAXY_TYPE[param.type]
     if param_type is None:
@@ -1171,15 +1171,11 @@ def create_param_attribute_list(param_node, param, model, supported_file_formats
     if param.is_list:
         param_type = "text"
 
-    if is_selection_parameter(param):
-        param_type = "select"
-        if len(param.restrictions.choices) < 5:
-            param_node.attrib["display"] = "checkboxes"
-        if param.is_list:
-            param_node.attrib["multiple"] = "true"
-
     if is_boolean_parameter(param):
         param_type = "boolean"
+
+    if is_selection_parameter(param):
+        param_type = "select"
 
     if param.type is _InFile:
         # assume it's just text unless restrictions are provided
@@ -1204,10 +1200,18 @@ def create_param_attribute_list(param_node, param, model, supported_file_formats
     # (in Galaxy the default would be prefilled in the form and at least
     # one option needs to be selected).
     if not (param.default is None or type(param.default) is _Null) and param_node.attrib["type"] in ["integer", "float", "text", "boolean", "select"]:
-        logger.error("%s %s %s %s %s" % (param.name, param.default is None, type(param.default) is _Null, param_type, param.type))
         param_node.attrib["optional"] = "false"
     else:
         param_node.attrib["optional"] = str(not param.required).lower()
+
+    logger.error(f"{param.name} {is_selection_parameter(param)}")
+    if param_type == "select":
+        if len(param.restrictions.choices) < 5 and param_node.attrib["optional"] != "false":
+            param_node.attrib["display"] = "checkboxes"
+        if param.is_list:
+            param_node.attrib["multiple"] = "true"
+
+    logger.error(f"{param.name} {param_node.attrib}")
 
     # check for parameters with restricted values (which will correspond to a "select" in galaxy)
     if param.restrictions is not None or param_type == "boolean":
@@ -1835,7 +1839,7 @@ def create_test_only(model, **kwargs):
                                          fmt_from_corresponding):  # and not param.is_list:
                     if type_param is None:
                         try:
-                            print("{} -> {}".format(ext, g2o[ext]))
+                            print("{} -> {}".format(ext, g2o.get(ext)))
                             attrib = OrderedDict([("name", param.name + "_type"), ("value", g2o[ext])])
                             add_child_node(parent, "param", attrib)
                         except KeyError:
