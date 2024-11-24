@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--This is a configuration file for the integration of a tools into Galaxy (https://galaxyproject.org/). This file was automatically generated using CTDConverter.-->
 <!--Proposed Tool Section: [Test]-->
-<tool id="select_test" name="select_test" version="@TOOL_VERSION@+galaxy@GALAXY_VERSION@">
+<tool id="select_test" name="select_test" version="@TOOL_VERSION@+galaxy@VERSION_SUFFIX@">
   <description>Select parameter tests</description>
   <macros>
     <token name="@EXECUTABLE@">select_test</token>
@@ -544,13 +544,12 @@ python3 '$__tool_directory__/fill_ctd.py' '@EXECUTABLE@.ctd' '$args_json' '$hard
         <param name="sect_list_wodefault_mandatory_adv" value="A,B,C,D"/>
         <param name="sect_list_wodefault_mandatory_many_adv" value="A,B,C,D,E"/>
       </section>
-      <conditional name="adv_opts_cond">
+      <section name="adv_opts">
         <param name="wodefault_mandatory_adv" value="A"/>
         <param name="wodefault_mandatory_many_adv" value="A"/>
         <param name="list_wodefault_mandatory_adv" value="A,B,C,D"/>
         <param name="list_wodefault_mandatory_many_adv" value="A,B,C,D,E"/>
-        <param name="adv_opts_selector" value="advanced"/>
-      </conditional>
+      </section>
     </test>
   </tests>
   <help><![CDATA[Select parameter tests.

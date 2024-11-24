@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!--This is a configuration file for the integration of a tools into Galaxy (https://galaxyproject.org/). This file was automatically generated using CTDConverter.-->
 <!--Proposed Tool Section: [Test]-->
-<tool id="bool" name="bool" version="@TOOL_VERSION@+galaxy@GALAXY_VERSION@">
+<tool id="bool" name="bool" version="@TOOL_VERSION@+galaxy@VERSION_SUFFIX@">
   <description>Bool parameter tests</description>
   <macros>
     <token name="@EXECUTABLE@">bool</token>
@@ -84,13 +84,12 @@ python3 '$__tool_directory__/fill_ctd.py' '@EXECUTABLE@.ctd' '$args_json' '$hard
         <param name="sect_flag_true_adv" value="true"/>
         <param name="sect_flag_false_adv" value="false"/>
       </section>
-      <conditional name="adv_opts_cond">
+      <section name="adv_opts">
         <param name="true_adv" value="true"/>
         <param name="false_adv" value="false"/>
         <param name="flag_true_adv" value="true"/>
         <param name="flag_false_adv" value="false"/>
-        <param name="adv_opts_selector" value="advanced"/>
-      </conditional>
+      </section>
     </test>
   </tests>
   <help><![CDATA[Bool parameter tests.
